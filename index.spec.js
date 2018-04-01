@@ -16,29 +16,29 @@ fs.readFile = (filename, callback) => {
   callback(null, new Buffer(JSON.stringify(testJokesFile)));
 };
 let {getAllJokes} = app;
+const testJokes = testJokesFile.jokes;
 getAllJokes((err, jokes) => {
-  assert.deepEqual(jokes, testJokesFile.jokes, "getAllJokes gets all jokes from file");
+  assert.deepEqual(jokes, testJokes, "getAllJokes gets all jokes from file");
 });
 
-// test makeJoke gets a random joke
+// test makeJoke gets a random joke from the file
 let {makeJoke} = app;
-makeJoke((err, joke) => {
-  assert(testJokesFile.jokes.includes(joke), "test makeJoke gets a random joke");
-});
+assert(testJokes.includes(makeJoke(testJokes)), "makeJoke makes a random joke");
 
 // test makeJokes calls makeJoke
-let isMakeJokeCalled = false;
-app.makeJoke = callback => {
-  isMakeJokeCalled = true;
-  makeJoke(callback);
+let wasMakeJokeCalled = false;
+app.makeJoke = jokes => {
+  wasMakeJokeCalled = true;
+  return makeJoke(jokes);
 }
 // stub to make a joke only once to prevent infinite loop
 setInterval = (callback, delay) => {
   setTimeout(callback, delay);
 }
-app.makeJokes(app.config.intervalTime = 1000, (err, joke) => {
-  assert(isMakeJokeCalled === true, 'makeJoke is called');
-});
+app.makeJokes(app.config.intervalTime = 1000);
+// TODO: Fix async issue where assertion should only be called after makeJokes
+// is completed.
+assert(wasMakeJokeCalled === true, 'makeJoke is called by makeJokes');
 
 // test if joke is made on every set interval time
 // app.makeJokes = (intervalTime) => {
