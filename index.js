@@ -34,6 +34,4 @@ app.makeJokes = intervalTime => {
   });
 }
 
-// app.makeJokes(app.config.intervalTime);
-
 module.exports = app;
