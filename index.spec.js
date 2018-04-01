@@ -6,19 +6,24 @@ const app = require('./index');
 const testJokesFile = {
   "jokes": [
     "some joke",
-    "some other joke"
+    "some other joke",
+    "another joke"
   ]
 };
 
-// stub file system
+// test getAllJokes gets all jokes from file
 fs.readFile = (filename, callback) => {
   callback(null, new Buffer(JSON.stringify(testJokesFile)));
 };
+let {getAllJokes} = app;
+getAllJokes((err, jokes) => {
+  assert.deepEqual(jokes, testJokesFile.jokes, "getAllJokes gets all jokes from file");
+});
 
-// test makeJoke returns a joke from the file
+// test makeJoke gets a random joke
 let {makeJoke} = app;
 makeJoke((err, joke) => {
-  assert(testJokesFile.jokes.includes(joke), "makeJoke returns a joke from the file");
+  assert(testJokesFile.jokes.includes(joke), "test makeJoke gets a random joke");
 });
 
 // test makeJokes calls makeJoke
