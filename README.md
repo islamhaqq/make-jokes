@@ -6,3 +6,11 @@ believe if we have a fundamental understanding of how Node works, then we can
 create great products. At the very least, we should learn Node.js to choose the
 right 3rd party libraries ;) What's beautiful about Node is you can do very
 advanced things without any 3rd party libraries.
+
+## How to Run
+
+```sh
+$ npm start
+```
+
+### Using Docker
