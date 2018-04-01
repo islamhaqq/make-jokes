@@ -19,4 +19,13 @@ app.makeJoke = callback => {
   })
 }
 
+app.makeJokes = (intervalTime, callback) => {
+  setInterval(() => {
+    app.makeJoke((err, joke) => {
+      if (err) callback(err);
+      callback(null, joke);
+    });
+  }, intervalTime);
+}
+
 module.exports = app;
